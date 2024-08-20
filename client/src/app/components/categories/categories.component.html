@@ -1,0 +1,11 @@
+<div class="p-4 bg-gray-100 rounded-lg shadow-md">
+    <h3 class="text-lg font-bold mb-4">Categories</h3>
+    <label class="block mb-2 text-gray-700">Category</label>
+    <select [(ngModel)]="selectedCategory"
+        class="w-full mb-4 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+        <option value="">All</option>
+        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select>
+    <button (click)="applyCategory()"
+        class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">Apply</button>
+</div>
