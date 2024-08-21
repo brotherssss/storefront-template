@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 
 // Define the path to the Angular app's build directory
-const clientDistPath = path.join(__dirname, '../client/dist/client');
+const clientDistPath = path.join(__dirname, '../client/dist');
 
 // Serve the static files from the Angular app
 app.use(express.static(clientDistPath));
