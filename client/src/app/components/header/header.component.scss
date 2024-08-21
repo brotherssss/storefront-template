@@ -1,0 +1,17 @@
+header {
+    // Initial state when visible
+    transform: translateY(0);
+    
+    // Hidden state
+    &.header-hidden {
+      transform: translateY(-100%);
+    }
+    
+    // Animation for both hiding and showing
+    &.header-visible {
+      transform: translateY(0);
+    }
+    
+    transition: transform 0.3s ease-in-out;
+  }
+  

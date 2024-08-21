@@ -9,6 +9,11 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { HomeComponent } from './components/home/home.component';
+import { AboutComponent } from './components/about/about.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +21,12 @@ import { FormsModule } from '@angular/forms';
     ProductsComponent,
     PaginationComponent,
     ProductDetailsComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    HeaderComponent,
+    FooterComponent,
+    HomeComponent,
+    AboutComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
