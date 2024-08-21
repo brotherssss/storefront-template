@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment.development';
 
 interface CartItem {
   id: string;
@@ -18,9 +19,7 @@ export class CartService {
 
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
 
-  //private baseUrl = 'http://localhost:9000';
-
-  private baseUrl = 'http://212.5.157.254:9000';
+  private baseUrl = environment.apiUrl;
 
   public cart$ = this.cartSubject.asObservable();
 
