@@ -8,15 +8,16 @@
         <h1 class="text-4xl font-bold mb-8">Products</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
             <ng-container *ngFor="let product of products">
-                <div *ngIf="product.variants[0]?.prices[0]?.amount"
-                     class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <div *ngIf="product.variants[0]?.prices[0]?.amount/100"
+                    class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col">
                     <a [routerLink]="['/product', product.id]" class="flex flex-col h-full">
                         <img [src]="product.thumbnail" alt="{{ product.title }}"
-                             class="w-full h-40 object-cover mb-4 rounded-lg">
+                            class="w-full h-40 object-cover mb-4 rounded-lg">
                         <h2 class="text-xl font-semibold mb-2">{{ product.title }}</h2>
                         <p class="text-gray-600 mb-4 truncate">{{ product.description }}</p>
                         <div class="mt-auto">
-                            <p class="text-lg font-bold text-blue-600">{{ product.variants[0]?.prices[0]?.amount | currency }}</p>
+                            <p class="text-lg font-bold text-blue-600">{{ product.variants[0]?.prices[0]?.amount/100 |
+                                currency }}</p>
                         </div>
                     </a>
                 </div>

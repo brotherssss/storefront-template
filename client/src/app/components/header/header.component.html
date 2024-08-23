@@ -13,9 +13,9 @@
 
         <!-- Desktop Navigation Menu -->
         <nav class="hidden lg:flex">
-            <a href="/" class="text-white mx-4">Home</a>
-            <a href="/products" class="text-white mx-4">Products</a>
-            <a href="/about" class="text-white mx-4">About</a>
+            <a [routerLink]="['/']" class="text-white mx-4">Home</a>
+            <a [routerLink]="['products']" class="text-white mx-4">Products</a>
+            <a [routerLink]="['/about']" class="text-white mx-4">About</a>
         </nav>
 
         <!-- Cart Icon -->
@@ -26,7 +26,7 @@
                     d="M3 3h2l.4 2M7 13h10l.4-2H7M5 8h12l.4 2H5M9 21a2 2 0 100-4 2 2 0 000 4m6-2a2 2 0 100-4 2 2 0 000 4M5 6l1 10h12l1-10H5z">
                 </path>
             </svg>
-            <span class="ml-2">{{ cartCount$ | async }}</span>
+            <span class="ml-2">{{ cartService.cartCount$| async }}</span>
         </a>
     </div>
 
@@ -43,9 +43,9 @@
             </button>
         </div>
         <div class="flex flex-col items-center mt-8">
-            <a href="/" class="text-white text-2xl py-2">Home</a>
-            <a href="/products" class="text-white text-2xl py-2">Products</a>
-            <a href="/about" class="text-white text-2xl py-2">About</a>
+            <a [routerLink]="['/']" class="text-white text-2xl py-2">Home</a>
+            <a [routerLink]="['/products']" class="text-white text-2xl py-2">Products</a>
+            <a [routerLink]="['/about']" class="text-white text-2xl py-2">About</a>
         </div>
     </nav>
 </header>

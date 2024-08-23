@@ -1,24 +1,25 @@
-import { Component, HostListener } from '@angular/core';
-import { CartService } from '../../shared/services/cart.service';
+import { Component, HostListener } from "@angular/core";
+import { CartService } from "../../shared/services/cart.service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent {
   public hideHeader: boolean = false;
 
   public mobileMenuOpen: boolean = false;
 
-  public cartCount$ = this.cartService.getCartCount();
+  constructor(public cartService: CartService) {}
 
-  constructor(private cartService: CartService) {}
-
-  @HostListener('window:scroll', ['$event'])
+  @HostListener("window:scroll", ["$event"])
   onScroll(event: Event): void {
     const currentScrollPos = window.pageYOffset;
     this.hideHeader = currentScrollPos > 100;
+  }
+
+  public ngOnInit() {
   }
 
   public toggleMobileMenu(): void {
