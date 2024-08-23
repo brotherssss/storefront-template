@@ -1,7 +1,7 @@
 <header [ngClass]="{'header-hidden': hideHeader, 'header-visible': !hideHeader}"
     class="fixed top-0 left-0 w-full z-50 transition-transform duration-300 ease-in-out bg-blue-600">
     <div class="container mx-auto py-4 px-6 flex justify-between items-center">
-        <a href="/" class="text-white text-2xl font-bold">MyStore</a>
+        <a [routerLink]="['/']" class="text-white text-2xl font-bold">MyStore</a>
 
         <!-- Hamburger Icon for Mobile Menu -->
         <button (click)="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none">
