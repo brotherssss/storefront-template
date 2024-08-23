@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment.development';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { environment } from "../../../environments/environment.development";
 
 interface CartItem {
   id: string;
@@ -10,18 +10,22 @@ interface CartItem {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CartService {
   private storage: Storage = localStorage;
 
-  private cartIdKey = 'cartId'; // Key for storing cart ID in localStorage
+  private cartIdKey = "cartId"; // Key for storing cart ID in localStorage
 
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
 
   private baseUrl = environment.apiUrl;
 
   public cart$ = this.cartSubject.asObservable();
+
+  private cartCountSubject = new BehaviorSubject<number>(0);
+
+  public cartCount$ = this.cartCountSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.loadCartFromLocalStorage();
@@ -37,6 +41,68 @@ export class CartService {
     } else {
       this.storage.removeItem(this.cartIdKey);
     }
+  }
+
+  public getCartId(): string | null {
+    return this.cartId;
+  }
+
+  public updateCustomerInfo(
+    email: string,
+    shippingData: any
+  ): Observable<any> {
+    if (!this.cartId) return of(null); // Handle the case where there's no cart ID
+
+    const url = `${this.baseUrl}/store/carts/${this.cartId}`;
+    return this.http.post(url, {
+      email: email,
+      shipping_address: shippingData,
+    });
+  }
+
+  public createPaymentSession(): Observable<any> {
+    if (!this.cartId) return of(null);
+
+    const url = `${this.baseUrl}/store/carts/${this.cartId}/payment-sessions`;
+    return this.http.post(url, {});
+  }
+
+  public completeOrder(paymentMethod: string): Observable<any> {
+    if (!this.cartId) return of(null);
+
+    const url = `${this.baseUrl}/store/carts/${this.cartId}/complete`;
+    return this.http.post(url, {
+      payment_method: paymentMethod,
+    });
+  }
+
+  public removeItem(lineItemId: string): Observable<any> {
+    return this.http
+      .delete<any>(
+        `${this.baseUrl}/store/carts/${this.cartId}/line-items/${lineItemId}`
+      )
+      .pipe(
+        map((cart) => {
+          this.calculateCount(cart);
+          this.cartSubject.next(cart.items);
+          return cart;
+        })
+      );
+  }
+
+  public updateQuantity(lineItemId: string, quantity: number): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this.baseUrl}/store/carts/${this.cartId}/line-items/${lineItemId}`,
+        { quantity }
+      )
+      .pipe(
+        map((cart) => {
+          this.calculateCount(cart);
+          this.cartSubject.next(cart.items);
+          return cart;
+        })
+      );
   }
 
   private fetchCart(): Observable<any> {
@@ -69,6 +135,7 @@ export class CartService {
       })
       .pipe(
         map((cart) => {
+          this.calculateCount(cart);
           this.cartSubject.next(cart.items);
           return cart;
         })
@@ -79,27 +146,30 @@ export class CartService {
     return this.fetchCart().pipe(map((cart) => (cart ? cart.cart.items : [])));
   }
 
-  public getCartCount(): Observable<number> {
-    return this.fetchCart().pipe(
-      map((cart) =>
-        cart
-          ? cart.cart.items.reduce(
-              (total: number, item: any) => total + item.quantity,
-              0
-            )
-          : 0
-      )
-    );
-  }
-
   private loadCartFromLocalStorage(): void {
     const cartId = this.cartId;
     if (cartId) {
-      this.fetchCart().subscribe(cart => {
+      this.fetchCart().subscribe((cart) => {
         if (cart) {
+          this.calculateCount(cart);
           this.cartSubject.next(cart.items);
         }
       });
     }
+  }
+
+  private calculateCount(cart: any) {
+    if(!cart) return;
+    const count =  cart
+    ? cart.cart.items.reduce(
+        (total: number, item: any) => total + item.quantity,
+        0
+      )
+    : 0
+    this.cartCountSubject.next(count);
+  }
+
+  public placeOrder(orderData: any) {
+    return this.http.post(`${this.baseUrl}/store/orders`, orderData);
   }
 }

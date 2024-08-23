@@ -1,11 +1,7 @@
 <div class="container mx-auto p-8">
   <div class="flex flex-col lg:flex-row" *ngIf="product">
     <div class="lg:w-1/2 pr-4 mb-6 lg:mb-0">
-      <img
-        [src]="product.thumbnail"
-        alt="{{ product.title }}"
-        class="w-full h-auto object-cover rounded-lg"
-      />
+      <img [src]="product.thumbnail" alt="{{ product.title }}" class="w-full h-auto object-cover rounded-lg" />
     </div>
     <div class="lg:w-1/2">
       <h1 class="text-4xl font-bold mb-4">{{ product.title }}</h1>
@@ -14,13 +10,10 @@
       <!-- Variants -->
       <div *ngIf="product.variants && product.variants.length > 0" class="mb-4">
         <label class="block text-lg font-semibold mb-2">Choose Variant:</label>
-        <select
-          [(ngModel)]="selectedVariant"
-          (change)="onVariantChange()"
-          class="border border-gray-300 rounded-lg p-2 w-full"
-        >
+        <select [(ngModel)]="selectedVariant" (change)="onVariantChange()"
+          class="border border-gray-300 rounded-lg p-2 w-full">
           <option *ngFor="let variant of product.variants" [value]="variant.id">
-            {{ variant.title }} - {{ variant.prices[0].amount | currency }}
+            {{ variant.title }} - {{ variant.prices[0].amount/100 | currency }}
           </option>
         </select>
       </div>
@@ -29,11 +22,19 @@
         Price: {{ selectedVariantPrice | currency }}
       </p>
 
-      <button
-        (click)="addToCart()"
-        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-      >
-        Add to Cart
+      <button (click)="addToCart()" [disabled]="loading"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+        <ng-container *ngIf="!loading; else loadingTemplate">
+          Add to Cart
+        </ng-container>
+        <ng-template #loadingTemplate>
+          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          <span class="ml-2">Adding...</span>
+        </ng-template>
       </button>
     </div>
   </div>
