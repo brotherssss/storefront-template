@@ -169,6 +169,10 @@ export class CartService {
     this.cartCountSubject.next(count);
   }
 
+  public setCartCount(count: number) {
+    this.cartCountSubject.next(count);
+  }
+
   public placeOrder(orderData: any) {
     return this.http.post(`${this.baseUrl}/store/orders`, orderData);
   }
