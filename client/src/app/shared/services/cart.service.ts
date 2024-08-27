@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-import { environment } from "../../../environments/environment.development";
+import { environment } from "../../../environments/environment";
 
 interface CartItem {
   id: string;
@@ -47,10 +47,7 @@ export class CartService {
     return this.cartId;
   }
 
-  public updateCustomerInfo(
-    email: string,
-    shippingData: any
-  ): Observable<any> {
+  public updateCustomerInfo(email: string, shippingData: any): Observable<any> {
     if (!this.cartId) return of(null); // Handle the case where there's no cart ID
 
     const url = `${this.baseUrl}/store/carts/${this.cartId}`;
@@ -159,13 +156,13 @@ export class CartService {
   }
 
   private calculateCount(cart: any) {
-    if(!cart) return;
-    const count =  cart
-    ? cart.cart.items.reduce(
-        (total: number, item: any) => total + item.quantity,
-        0
-      )
-    : 0
+    if (!cart) return;
+    const count = cart
+      ? cart.cart.items.reduce(
+          (total: number, item: any) => total + item.quantity,
+          0
+        )
+      : 0;
     this.cartCountSubject.next(count);
   }
 
