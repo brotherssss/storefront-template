@@ -1,0 +1,51 @@
+<header [ngClass]="{'header-hidden': hideHeader, 'header-visible': !hideHeader}"
+    class="fixed top-0 left-0 w-full z-50 transition-transform duration-300 ease-in-out bg-blue-600">
+    <div class="container mx-auto py-4 px-6 flex justify-between items-center">
+        <a [routerLink]="['/']" class="text-white text-2xl font-bold">MyStore</a>
+
+        <!-- Hamburger Icon for Mobile Menu -->
+        <button (click)="toggleMobileMenu()" class="lg:hidden text-white focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="hidden lg:flex">
+            <a [routerLink]="['/']" class="text-white mx-4">Home</a>
+            <a [routerLink]="['products']" class="text-white mx-4">Products</a>
+            <a [routerLink]="['/about']" class="text-white mx-4">About</a>
+        </nav>
+
+        <!-- Cart Icon -->
+        <a [routerLink]="['/cart']" class="text-white flex items-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l.4-2H7M5 8h12l.4 2H5M9 21a2 2 0 100-4 2 2 0 000 4m6-2a2 2 0 100-4 2 2 0 000 4M5 6l1 10h12l1-10H5z">
+                </path>
+            </svg>
+            <span class="ml-2">{{ cartService.cartCount$| async }}</span>
+        </a>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav class="lg:hidden fixed w-screen bg-blue-600 z-40 transform transition-transform duration-300 ease-in-out"
+        [ngClass]="{'translate-x-0': mobileMenuOpen, '-translate-x-full': !mobileMenuOpen}">
+        <div class="flex justify-end p-4">
+            <button (click)="toggleMobileMenu()" class="text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col items-center mt-8">
+            <a [routerLink]="['/']" class="text-white text-2xl py-2">Home</a>
+            <a [routerLink]="['/products']" class="text-white text-2xl py-2">Products</a>
+            <a [routerLink]="['/about']" class="text-white text-2xl py-2">About</a>
+        </div>
+    </nav>
+</header>
