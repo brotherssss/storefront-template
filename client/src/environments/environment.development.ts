@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'dev.felicebg.com'
+  apiUrl: 'dev.admin.felicebg.com'
 };
